@@ -45,6 +45,10 @@ void ChessBoard::setUp ( int white, int black) {
 /* This function prints the chess board to a terminal screen */
 void ChessBoard::display () {
 	cls();
+	std::cout <<"\n\t ";
+	for (int i = 0; i < rows; i++)
+		std::cout << "--- ";
+	std::cout << std::endl;
 	for (int i = 0; i < rows; i++) {
 		std::cout << "\t|";
 		for (int j = 0; j < cols; j++) {
@@ -60,6 +64,10 @@ void ChessBoard::display () {
 		}
 		std::cout << std::endl;
 	}
+	std::cout << "\t ";
+	for (int i = 0; i < rows; i++)
+		std::cout <<"--- ";
+	std::cout << std::endl;
 }
 
 
