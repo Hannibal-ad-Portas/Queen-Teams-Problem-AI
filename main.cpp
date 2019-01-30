@@ -32,10 +32,15 @@
 #include <string>
 #include <vector>
 #include <cstdlib>
+#include <random>
+#include "hillClimb.h"
+#include "util.h"
 
 using namespace std;
 
 static void show_usage(string name) {
+	/* initialize random seed: */
+
 	cerr<< "Usage: " << name << " R C W B tmax solution.txt method" << endl
 		<< "Required\n"
 		<< "\tR\t\tNumber of rows in the game board\n"
@@ -50,15 +55,11 @@ static void show_usage(string name) {
 
 int main (int argc, char* argv[]) {
 
-
-
 	string output;
-
 	if ( argc < 7 ) {
 		show_usage(argv[0]);
 		return 1;
 	}
-
 	int row = atoi(argv[1]);
 	int col = atoi(argv[2]);
 	int white = atoi(argv[3]);
@@ -67,8 +68,12 @@ int main (int argc, char* argv[]) {
 	string outFile = argv[6];
 	string method = argv[7];
 
+	srand (time(NULL));
+
 	if (method == "HC" || method == "hc") {
 		cout << "Hill Climb Method\n";
+		hillClimb (row, col, white, black, tmax);
+
 	} else if ( method == "SA" || method == "sa") {
 		cout << "Simulated Annealing Method\n";
 	} else if ( method == "extra" || method == "EXTRA") {

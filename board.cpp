@@ -1,5 +1,6 @@
 #include <vector>
 #include <iostream>
+#include "board.h"
 #include "util.h"
 
 // This creates a chess board of rows by col
@@ -41,37 +42,24 @@ void ChessBoard::setUp ( int white, int black) {
 	}
 }
 
-/*
- * This function clears the terminal screen
- * It does this differently depending on whether or not you are on windows or Linux
- * TODO improve how the screen is cleared on windows
- */
-
-#ifdef _WIN32
-#include <stdlib.h>
-void cls() {
-	system("cls");
-}
-#endif
-#ifdef __gnu_linux__
-void cls() {
-	std::cout <<"\033[H\033[2J";
-	return;
-}
-#endif
-
 /* This function prints the chess board to a terminal screen */
 void ChessBoard::display () {
+	cls();
 	for (int i = 0; i < rows; i++) {
-		cls();
-		std::cout << "\t --- --- ---\n";
 		std::cout << "\t|";
 		for (int j = 0; j < cols; j++) {
-			std::cout << " " << vectBoard[i][j] << " |";
+			std::cout << " ";
+			if ( vectBoard[i][j] == 1) {
+				std::cout << "W";
+			} else if (vectBoard[i][j] == -1) {
+				std::cout << "B";
+			} else {
+				std::cout << " ";
+			}
+			std::cout << " |";
 		}
 		std::cout << std::endl;
 	}
-	std::cout << "\t --- --- ---\n";
 }
 
 

@@ -5,6 +5,7 @@
  */
 
 #include <iostream>
+#include "board.h"
 #include "util.h"
 
 void hillClimb (int row, int col, int white, int black, int tmax) {
