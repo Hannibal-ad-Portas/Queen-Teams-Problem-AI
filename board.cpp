@@ -13,7 +13,7 @@ ChessBoard::ChessBoard (int row, int col) {
 /* This function calculates and sets the fitness of the board state
  * The fitness is better the fewer number of threats
  */
-void ChessBoard::fitness () {
+void ChessBoard::fitness() {
 	fit = 0;
 	//TODO
 }
@@ -32,9 +32,15 @@ void ChessBoard::setUp ( int white, int black) {
 			if (black > 0 || white > 0)  {
 				if (black > 0 && black >= white) {
 					vectBoard[tempRow][tempCol] = -1;
+					blackQueens.push_back(Queen());
+					blackQueens.back().row = tempRow;
+					blackQueens.back().col = tempCol;
 					black--;
 				} else if (white > 0) {
 					vectBoard[tempRow][tempCol] = 1;
+					whiteQueens.push_back(Queen());
+					whiteQueens.back().row = tempRow;
+					whiteQueens.back().col = tempCol;
 					white--;
 				}
 			}
@@ -45,12 +51,12 @@ void ChessBoard::setUp ( int white, int black) {
 /* This function prints the chess board to a terminal screen */
 void ChessBoard::display () {
 	cls();
-	std::cout <<"\n\t ";
-	for (int i = 0; i < rows; i++)
-		std::cout << "--- ";
+	std::cout <<"\n\t    ";
+	for (int i = 0; i < cols; i++)
+		cout << i << "   ";
 	std::cout << std::endl;
 	for (int i = 0; i < rows; i++) {
-		std::cout << "\t|";
+		std::cout << "\t" << i << " |";
 		for (int j = 0; j < cols; j++) {
 			std::cout << " ";
 			if ( vectBoard[i][j] == 1) {
@@ -64,11 +70,26 @@ void ChessBoard::display () {
 		}
 		std::cout << std::endl;
 	}
-	std::cout << "\t ";
-	for (int i = 0; i < rows; i++)
+	std::cout << "\t   ";
+	for (int i = 0; i < cols; i++)
 		std::cout <<"--- ";
 	std::cout << std::endl;
 }
 
 
+/* This function prints out the position of a queen in the row col format */
+void Queen::displayPosition () {
+	std::cout << " " << row << " " << col << std::endl;
+}
 
+/* This function prints out the position of all the queens in a vector */
+void ChessBoard::displayQueens () {
+	std::cout << "\nThe black queens are at\n";
+	for (auto &i : blackQueens) {
+		i.displayPosition();
+	}
+	std::cout << "\nThe white queens are at\n";
+	for (auto &i : whiteQueens) {
+		i.displayPosition();
+	}
+}
