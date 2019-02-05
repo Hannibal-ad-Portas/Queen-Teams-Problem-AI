@@ -33,6 +33,7 @@
 #include <vector>
 #include <cstdlib>
 #include <random>
+#include "board.h"
 #include "hillClimb.h"
 #include "util.h"
 
@@ -72,7 +73,8 @@ int main (int argc, char* argv[]) {
 
 	if (method == "HC" || method == "hc") {
 		cout << "Hill Climb Method\n";
-		hillClimb (row, col, white, black, tmax);
+		ChessBoard best = hillClimb (row, col, white, black, tmax);
+		best.printToFile(outFile);
 
 	} else if ( method == "SA" || method == "sa") {
 		cout << "Simulated Annealing Method\n";

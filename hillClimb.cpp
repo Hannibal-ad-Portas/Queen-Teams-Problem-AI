@@ -10,26 +10,25 @@
 
 ChessBoard findBest (ChessBoard board);
 
-void hillClimb (int row, int col, int white, int black, int tmax) {
+ChessBoard hillClimb (int row, int col, int white, int black, int tmax) {
 	using namespace std;
 	//create a global 'best' with an initial random configuration
-	cout << "Creating board\n";
+	//cout << "Creating board\n";
 	ChessBoard best(row, col, white, black);
-	cout << "placing queens\n";
+	//cout << "placing queens\n";
 	//Display the Board
-	best.display();
-	cout << "Finding Fitness\n";
-	cout << "This board's fitness is " << best.findFitness() << endl;
-	//split off a number of child processes to calculate the solution independently
+	//best.display();
+	//cout << "Finding Fitness\n";
+	//cout << "This board's fitness is " << best.findFitness() << endl;
 	best = findBest(best);
-	best.display();
+	return best;
 }
 
 ChessBoard findBest (ChessBoard board) {
 	using namespace std;
 	ChessBoard bestBoard = board;
 	int fitness = board.findFitness();
-	cout << "Inital Fitness: " << fitness << endl;
+	//cout << "Inital Fitness: " << fitness << endl;
 	int index = 0;
 	while (fitness != 0) {
 		//select a queen form the board
@@ -41,7 +40,7 @@ ChessBoard findBest (ChessBoard board) {
 		} else {
 			selectedQueen = &board.blackQueens[index - board.wQueens];
 		}
-		cout << "\nQueen " << index << " selected\n";
+		//cout << "\nQueen " << index << " selected\n";
 		//move the queen to new position checking the fitness each time
 		int bestPosFitness = fitness;
 		int tempPosFitness = fitness;
@@ -57,13 +56,13 @@ ChessBoard findBest (ChessBoard board) {
 				selectedQueen->col = j;
 				//cout << "Testing pos " << selectedQueen->row << " " << selectedQueen->col << endl;
 				tempPosFitness = board.findFitness();
-				cout << "Temp Fitness is: " << tempPosFitness << endl;
-				cout << "Best Pos Fitness is: " << bestPosFitness << endl;
+				//cout << "Temp Fitness is: " << tempPosFitness << endl;
+				//cout << "Best Pos Fitness is: " << bestPosFitness << endl;
 				if ( tempPosFitness < bestPosFitness) {
 					bestPosFitness = tempPosFitness;
 					bestRow = i;
 					bestCol = j;
-					cout << "Better pos found at: " << i << " " << j << endl;
+					//cout << "Better pos found at: " << i << " " << j << endl;
 				}
 			}
 		}
@@ -71,14 +70,14 @@ ChessBoard findBest (ChessBoard board) {
 			selectedQueen->row = bestRow;
 			selectedQueen->col = bestCol;
 			fitness = bestPosFitness;
-			cout << "Better Configuration Found\n";
+			//cout << "Better Configuration Found\n";
 			board.fillBoard();
 			bestBoard = board;
 		} else {
 			selectedQueen->row = originalRow;
 			selectedQueen->col = originalCol;
 		}
-		bestBoard.display();
+		//bestBoard.display();
 		index++;
 	}
 	return bestBoard;

@@ -1,6 +1,7 @@
 #ifndef BOARD_H
 #define BOARD_H
 #include <vector>
+#include <string>
 using namespace std;
 
 struct Queen {
@@ -11,6 +12,7 @@ struct Queen {
 
 class ChessBoard {
 	int fitness;
+	bool solved;
 	public:
 	int wQueens;
 	int bQueens;
@@ -24,5 +26,6 @@ class ChessBoard {
 	void setUp ();
 	void fillBoard();
 	void display();
+	void printToFile(string file);
 };
 #endif

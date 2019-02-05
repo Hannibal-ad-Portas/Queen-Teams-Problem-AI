@@ -2,13 +2,14 @@
 #include <iostream>
 #include <stdlib.h>
 #include <random>
-#include <algorithm>
-#include <chrono>
+#include <fstream>
+#include <string>
 #include "board.h"
 #include "util.h"
 
 // This creates a chess board of rows by col
 ChessBoard::ChessBoard (int row, int col, int white, int black) {
+	solved = false;
 	rows = row;
 	cols = col;
 	wQueens = white;
@@ -49,29 +50,31 @@ int ChessBoard::findFitness() {
 				fitness++;
 		}
 	}
+	if (fitness == 0)
+		solved = true;
 	return fitness;
 }
 
 void ChessBoard::fillBoard() {
-	std::cout << "Filling Board with 0's\n";
+	//std::cout << "Filling Board with 0's\n";
 	for (int i = 0; i < rows; i++) {
 		for (int j =0; j < cols; j++) {
 			vectBoard[i][j] = 0;
 		}
 	}
-	std::cout << "Setting W pos\n";
+	//std::cout << "Setting W pos\n";
 	int i = 0;
 	for (auto &w : whiteQueens) {
-		std::cout << "Queen "<< i << std::endl;
-		std::cout << w.row << " " << w.col << endl;
+		//std::cout << "Queen "<< i << std::endl;
+		//std::cout << w.row << " " << w.col << endl;
 		i++;
 		vectBoard[w.row][w.col] = 1;
 	}
-	std::cout << "Setting B pos\n";
+	//std::cout << "Setting B pos\n";
 	i = 0;
 	for (auto &b : blackQueens) {
-		std::cout << "Queen " << i << std::endl;
-		std::cout << b.row << " " << b.col << endl;
+		//std::cout << "Queen " << i << std::endl;
+		//std::cout << b.row << " " << b.col << endl;
 		i++;
 		vectBoard[b.row][b.col] = -1;
 	}
@@ -118,6 +121,38 @@ void ChessBoard::display () {
 	std::cout << endl;
 }
 
+void ChessBoard::printToFile (string file) {
+	using namespace std;
+	ofstream ofile;
+	ofile.open(file);
+	ofile << "\n\t    ";
+	for (int i = 0; i < cols; i++)
+		ofile << i << "   ";
+	ofile << std::endl;
+	for (int i = 0; i < rows; i++) {
+		ofile << "\t" << i << " |";
+		for (int j = 0; j  < cols; j++) {
+			ofile << " ";
+			if (vectBoard[i][j] == 1)
+				ofile << "W";
+			if (vectBoard[i][j] == -1)
+				ofile << "B";
+			if (vectBoard[i][j] == 0)
+				ofile << " ";
+			ofile << " |";
+		}
+		ofile << endl;
+	}
+	ofile << "\t   ";
+	for (int i = 0; i < cols; i++)
+		ofile << "--- ";
+	ofile << endl;
+	ofile << "\tSolved: ";
+	if (solved)
+		ofile << "Yes\n";
+	if (!solved)
+		ofile << "No\n";
+}
 /* This function prints out the position of a queen in the row col format */
 void Queen::displayPosition () {
 	std::cout << " " << row << " " << col << std::endl;
