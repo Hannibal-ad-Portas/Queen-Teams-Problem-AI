@@ -5,12 +5,13 @@
  */
 
 #include <iostream>
+#include <time.h>
 #include "board.h"
 #include "util.h"
 
-ChessBoard findBest (ChessBoard board);
+ChessBoard findBest (ChessBoard board, double seconds);
 
-ChessBoard hillClimb (int row, int col, int white, int black, int tmax) {
+ChessBoard hillClimb (int row, int col, int white, int black, double tmax) {
 	using namespace std;
 	//create a global 'best' with an initial random configuration
 	//cout << "Creating board\n";
@@ -20,17 +21,19 @@ ChessBoard hillClimb (int row, int col, int white, int black, int tmax) {
 	//best.display();
 	//cout << "Finding Fitness\n";
 	//cout << "This board's fitness is " << best.findFitness() << endl;
-	best = findBest(best);
+	best = findBest(best, tmax);
 	return best;
 }
 
-ChessBoard findBest (ChessBoard board) {
+ChessBoard findBest (ChessBoard board, double seconds) {
 	using namespace std;
+	time_t timer;
 	ChessBoard bestBoard = board;
 	int fitness = board.findFitness();
 	//cout << "Inital Fitness: " << fitness << endl;
 	int index = 0;
-	while (fitness != 0) {
+	time(&timer);
+	while (fitness != 0 && difftime(timer,time(NULL) < seconds)) {
 		//select a queen form the board
 		Queen * selectedQueen;
 		if (index > board.wQueens + board.bQueens)

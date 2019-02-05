@@ -42,7 +42,7 @@ using namespace std;
 static void show_usage(string name) {
 	/* initialize random seed: */
 
-	cerr<< "Usage: " << name << " R C W B tmax solution.txt method" << endl
+	cerr<< "Usage: " << name << " R C W B tmax solution.txt" << endl
 		<< "Required\n"
 		<< "\tR\t\tNumber of rows in the game board\n"
 		<< "\tC\t\tNumber of columns in the game board\n"
@@ -50,14 +50,13 @@ static void show_usage(string name) {
 		<< "\tB\t\tNumber of black queens\n"
 		<< "\ttmax\t\tMax runtime, in seconds\n"
 		<< "\tsolution.txt\tFile to print the results to\n"
-		<< "\tmethod\t\tHC SA extra\n"
 		<< endl;
 }
 
 int main (int argc, char* argv[]) {
 
 	string output;
-	if ( argc < 7 ) {
+	if ( argc < 6 ) {
 		show_usage(argv[0]);
 		return 1;
 	}
@@ -65,26 +64,22 @@ int main (int argc, char* argv[]) {
 	int col = atoi(argv[2]);
 	int white = atoi(argv[3]);
 	int black = atoi(argv[4]);
-	int tmax = atoi(argv[5]);
+	double tmax = atoi(argv[5]);
 	string outFile = argv[6];
-	string method = argv[7];
+
+	int queens = white + black;
+
+	if (queens > row || queens > col) {
+		cout << "This problem is impossible to solve.\n There needs to be fewer queens than both rows or columns\n";
+		return 0;
+	}
 
 	srand (time(NULL));
+	ChessBoard best = hillClimb (row, col, white, black, tmax);
+	best.printToFile(outFile);
 
-	if (method == "HC" || method == "hc") {
-		cout << "Hill Climb Method\n";
-		ChessBoard best = hillClimb (row, col, white, black, tmax);
-		best.printToFile(outFile);
-
-	} else if ( method == "SA" || method == "sa") {
-		cout << "Simulated Annealing Method\n";
-	} else if ( method == "extra" || method == "EXTRA") {
-		cout << "Extra Credit\n";
-	} else {
-		cout << method;
-		cout << " is not a valid method\n"
-			<< "Please us HC, SA, or extra\n";
-	}
+	cout << "Finished";
+	cout << endl;
 
 	return 0;
 }
